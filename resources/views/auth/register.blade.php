@@ -1,46 +1,80 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Register</title>
-</head>
-<body>
+@extends('layouts.app')
 
-    <h2>Register Akun Baru</h2>
+@section('content')
 
-    @if ($errors->any())
-        <div style="color:red;">
-            <ul>
-                @foreach ($errors->all() as $error)
-                    <li>{{ $error }}</li>
-                @endforeach
-            </ul>
+<div style="background-color:#f4a641; min-height:100vh; display:flex; align-items:center; justify-content:center; position:relative;">
+
+    <!-- LOGO & JUDUL DI ATAS -->
+    <div style="text-align:center; position:absolute; top:40px; width:100%;">
+        <img src="{{ asset('images/silapar-logo.png') }}" width="120" alt="Logo Silapar">
+    </div>
+
+    <!-- CARD REGISTER -->
+    <div style="background-color:#8B0000; padding:40px; border-radius:25px; width:400px; margin-top:140px;">
+
+        <h2 style="color:white; font-weight:bold; text-align:center; font-size:26px;">Buat Akun Baru</h2>
+
+        <p style="text-align:center; color:#ffecec; margin-bottom:20px;">
+            Sudah punya akun?
+            <a href="{{ route('login') }}" style="color:#ffdede; text-decoration:underline;">Masuk</a>
+        </p>
+
+        @if ($errors->any())
+            <div style="color: #ffcdcd; background:#5f0000; border-radius:6px; padding:10px; margin-bottom:15px;">
+                <ul style="margin:0; padding-left:20px;">
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
+
+        <form method="POST" action="{{ route('register') }}">
+            @csrf
+
+            <div class="mb-3">
+                <label style="color:white;">Nama Lengkap</label>
+                <input type="text" name="name" class="form-control" required>
+            </div>
+
+            <div class="mb-3">
+                <label style="color:white;">Email</label>
+                <input type="email" name="email" class="form-control" required>
+            </div>
+
+            <div class="mb-3">
+                <label style="color:white;">Kata Sandi</label>
+                <input type="password" name="password" class="form-control" required>
+            </div>
+
+            <div class="mb-3">
+                <label style="color:white;">Konfirmasi Kata Sandi</label>
+                <input type="password" name="password_confirmation" class="form-control" required>
+            </div>
+
+            <button class="btn w-100 mt-2" style="background-color:#a00000; color:white; font-weight:bold;">
+                Register
+            </button>
+        </form>
+
+        <!-- SUDAH PUNYA AKUN + TOMBOL DI KANAN -->
+        <div style="
+            margin-top:15px;
+            font-size:12px;
+            display:flex;
+            justify-content:center;
+            align-items:center;
+            gap:10px;
+            color:white;
+        ">
+            <span>Sudah punya akun?</span>
+            <a href="{{ route('login') }}"
+               style="background:#400000; padding:6px 12px; border-radius:5px; color:white; text-decoration:none;">
+                Login
+            </a>
         </div>
-    @endif
 
-    <form action="/register" method="POST">
-        @csrf
+    </div>
+</div>
 
-        <label>Nama Lengkap:</label><br>
-        <input type="text" name="name" required><br><br>
-
-        <label>Email:</label><br>
-        <input type="email" name="email" required><br><br>
-
-        <label>Password:</label><br>
-        <input type="password" name="password" required><br><br>
-
-        <label>Konfirmasi Password:</label><br>
-        <input type="password" name="password_confirmation" required><br><br>
-
-        <button type="submit">Daftar</button>
-    </form>
-
-    <br>
-
-    <p>Sudah punya akun?</p>
-    <a href="/login">
-        <button>Kembali ke Login</button>
-    </a>
-
-</body>
-</html>
+@endsection
