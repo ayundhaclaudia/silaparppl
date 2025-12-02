@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\MenuController;
 
 /*
 |--------------------------------------------------------------------------
@@ -38,3 +39,11 @@ Route::get('/register', [AuthController::class, 'registerPage'])->name('register
 
 // Proses Register
 Route::post('/register', [AuthController::class, 'registerProcess']);
+
+Route::get('/dashboard', function () {
+    return redirect()->route('menus.index');
+})->middleware('auth');
+
+// Halaman menu & rekomendasi berdasarkan budget (auth protected)
+Route::get('/menus', [MenuController::class, 'index'])->name('menus.index');
+Route::get('/menus/{id}', [MenuController::class, 'show'])->name('menus.show');
