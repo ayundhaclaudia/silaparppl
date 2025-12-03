@@ -3,7 +3,7 @@
 @section('content')
 
 @php
-    // Ambil nilai filter saat ini dari request
+
     $currentCategory = request('category');
     $currentRating = request('rating');
 @endphp
