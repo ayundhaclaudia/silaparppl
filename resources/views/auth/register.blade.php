@@ -4,12 +4,10 @@
 
 <div style="background-color:#f4a641; min-height:100vh; display:flex; align-items:center; justify-content:center; position:relative;">
 
-    <!-- LOGO & JUDUL DI ATAS -->
     <div style="text-align:center; position:absolute; top:40px; width:100%;">
         <img src="{{ asset('images/silapar-logo.png') }}" width="120" alt="Logo Silapar">
     </div>
 
-    <!-- CARD REGISTER -->
     <div style="background-color:#8B0000; padding:40px; border-radius:25px; width:400px; margin-top:140px;">
 
         <h2 style="color:white; font-weight:bold; text-align:center; font-size:26px;">Buat Akun Baru</h2>
