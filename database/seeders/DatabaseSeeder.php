@@ -12,14 +12,12 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        $this->call([
-            MenuSeeder::class,
-        ]);
-        // \App\Models\User::factory(10)->create();
+        // seeder lain kalau ada...
 
-        // \App\Models\User::factory()->create([
-        //     'name' => 'Test User',
-        //     'email' => 'test@example.com',
-        // ]);
+        $this->call([
+            AdminUserSeeder::class,
+            MenuSeeder::class,  // kalau kamu pakai ini juga
+        ]);
     }
+
 }

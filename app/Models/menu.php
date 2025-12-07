@@ -11,5 +11,13 @@ class Menu extends Model
         'price',
         'description',
         'image',
+        'rating',          // <— tambah
+        'reviews_count',
     ];
+
+    public function carts()
+    {
+        return $this->hasMany(\App\Models\Cart::class);
+    }
+
 }
