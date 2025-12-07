@@ -21,6 +21,7 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'role',
     ];
 
     /**
@@ -41,4 +42,17 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public function carts()
+    {
+        return $this->hasMany(\App\Models\Cart::class);
+    }
+
+    public function savedMenus()
+    {
+        return $this->belongsToMany(\App\Models\Menu::class, 'carts')
+            ->withPivot('quantity')
+            ->withTimestamps();
+    }
+
 }
