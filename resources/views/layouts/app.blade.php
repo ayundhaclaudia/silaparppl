@@ -149,6 +149,13 @@
                         Dashboard
                     </a>
 
+                    {{-- TAB KERANJANG – hanya USER biasa --}}
+                     @if($user && !$user->is_admin)
+                         <a href="{{ route('cart.index') }}"
+                             class="nav-tab {{ request()->routeIs('cart.*') ? 'is-active' : '' }}">
+                         Keranjang
+                     </a>
+                 @endif
 
 
                     {{-- TAB KELOLA MENU – hanya ADMIN --}}
