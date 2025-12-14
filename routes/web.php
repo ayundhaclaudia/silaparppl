@@ -5,6 +5,8 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\MenuController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\Admin\AdminMenuController;
+use App\Http\Controllers\Admin\AdminUserController;
+
 
 // ==========================
 // AUTH & LANDING
@@ -62,4 +64,9 @@ Route::prefix('admin')
 
         // CRUD kelola menu
         Route::resource('menus', AdminMenuController::class);
+
+        // Manajemen user
+        Route::get('/users', [AdminUserController::class, 'index'])->name('users.index');
+        Route::get('/users/{user}', [AdminUserController::class, 'show'])->name('users.show');
+        Route::delete('/users/{user}', [AdminUserController::class, 'destroy'])->name('users.destroy');
     });

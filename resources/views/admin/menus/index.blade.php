@@ -1,150 +1,63 @@
 @extends('layouts.app')
 
 @section('content')
-    <style>
-        .admin-wrap {
-            max-width: 1100px;
-            margin: 24px auto 40px;
-            padding: 0 1.5rem;
-        }
-        .admin-title {
-            font-size: 1.4rem;
-            font-weight: 700;
-            margin-bottom: 8px;
-        }
-        .admin-sub {
-            font-size: .9rem;
-            color: #6B7280;
-            margin-bottom: 18px;
-        }
-        .admin-table {
-            width: 100%;
-            border-collapse: collapse;
-            background: #fff;
-            border-radius: 12px;
-            overflow: hidden;
-            box-shadow: 0 10px 26px rgba(0,0,0,0.12);
-        }
-        .admin-table th,
-        .admin-table td {
-            padding: 10px 12px;
-            font-size: .9rem;
-            border-bottom: 1px solid #E5E7EB;
-        }
-        .admin-table th {
-            background: #111827;
-            color: #F9FAFB;
-            text-align: left;
-        }
-        .admin-table tr:last-child td {
-            border-bottom: none;
-        }
-        .admin-badge-price {
-            font-weight: 600;
-            color: #A00000;
-        }
-        .admin-actions {
-            display: flex;
-            gap: 6px;
-            flex-wrap: wrap;
-        }
-        .admin-btn {
-            border-radius: 999px;
-            border: none;
-            padding: 5px 10px;
-            font-size: .8rem;
-            font-weight: 600;
-            cursor: pointer;
-            text-decoration: none;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-        }
-        .admin-btn-add {
-            background: #10B981;
-            color: #fff;
-            margin-bottom: 10px;
-        }
-        .admin-btn-edit {
-            background: #F59E0B;
-            color: #111827;
-        }
-        .admin-btn-delete {
-            background: #B91C1C;
-            color: #fff;
-        }
-        .admin-btn:hover {
-            filter: brightness(1.05);
-            text-decoration: none;
-        }
-    </style>
+<div style="max-width:1200px;margin:28px auto;padding:0 1.5rem;">
+    <h2 style="font-size:28px;font-weight:800;margin-bottom:6px;">Kelola Menu</h2>
+    <p style="color:#6B7280;margin-bottom:14px;">
+        Tambah, ubah, atau hapus menu yang nantinya akan muncul di halaman user.
+    </p>
 
-    <div class="admin-wrap">
-        <div class="mb-2">
-            <div class="admin-title">Kelola Menu</div>
-            <div class="admin-sub">
-                Tambah, ubah, atau hapus menu yang nantinya akan muncul di halaman user.
-            </div>
+    @if(session('success'))
+        <div style="background:#D1FAE5;color:#065F46;padding:10px 12px;border-radius:10px;margin-bottom:14px;">
+            {{ session('success') }}
         </div>
+    @endif
 
-        @if (session('success'))
-            <div style="background:#DCFCE7;color:#166534;padding:8px 12px;border-radius:8px;margin-bottom:10px;font-size:.85rem;">
-                {{ session('success') }}
-            </div>
-        @endif
+    <a href="{{ route('admin.menus.create') }}"
+       style="display:inline-block;background:#10B981;color:#fff;padding:10px 16px;border-radius:999px;text-decoration:none;font-weight:700;margin-bottom:14px;">
+        + Tambah Menu
+    </a>
 
-        {{-- Tombol tambah menu (nanti arahkan ke route create admin) --}}
-        <a href="{{ route('admin.menus.create') }}" class="admin-btn admin-btn-add">
-            + Tambah Menu
-        </a>
-
-        <table class="admin-table">
-            <thead>
+    <div style="background:#fff;border-radius:16px;overflow:hidden;box-shadow:0 10px 24px rgba(0,0,0,.10);">
+        <table style="width:100%;border-collapse:collapse;">
+            <thead style="background:#111827;color:#fff;">
                 <tr>
-                    <th style="width:50px;">#</th>
-                    <th>Nama Menu</th>
-                    <th style="width:120px;">Harga</th>
-                    <th style="width:80px;">Rating</th>
-                    <th style="width:140px;">Aksi</th>
+                    <th style="padding:12px;text-align:left;">#</th>
+                    <th style="padding:12px;text-align:left;">Nama Menu</th>
+                    <th style="padding:12px;text-align:left;">Harga</th>
+                    <th style="padding:12px;text-align:left;">Rating</th>
+                    <th style="padding:12px;text-align:right;">Aksi</th>
                 </tr>
             </thead>
             <tbody>
-                @forelse ($menus as $index => $menu)
-                    <tr>
-                        <td>{{ $index + 1 }}</td>
-                        <td>{{ $menu->name }}</td>
-                        <td class="admin-badge-price">
-                            Rp {{ number_format($menu->price, 0, ',', '.') }}
-                        </td>
-                        <td>
-                            {{ $menu->rating ?? '-' }}
-                        </td>
-                        <td>
-                            <div class="admin-actions">
-                                <a href="{{ route('admin.menus.edit', $menu->id) }}"
-                                   class="admin-btn admin-btn-edit">
-                                    Edit
-                                </a>
+            @foreach($menus as $i => $menu)
+                <tr style="border-bottom:1px solid #E5E7EB;">
+                    <td style="padding:12px;">{{ $i+1 }}</td>
+                    <td style="padding:12px;font-weight:600;">{{ $menu->name }}</td>
+                    <td style="padding:12px;color:#A00000;font-weight:700;">
+                        Rp {{ number_format($menu->price,0,',','.') }}
+                    </td>
+                    <td style="padding:12px;">{{ number_format($menu->rating,1) }}</td>
+                    <td style="padding:12px;text-align:right;">
+                        <a href="{{ route('admin.menus.edit', $menu) }}"
+                           style="display:inline-block;background:#F59E0B;color:#111827;padding:8px 14px;border-radius:999px;text-decoration:none;font-weight:700;">
+                            Edit
+                        </a>
 
-                                <form method="POST" action="{{ route('admin.menus.destroy', $menu->id) }}"
-                                      onsubmit="return confirm('Yakin ingin menghapus menu ini?')">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="submit" class="admin-btn admin-btn-delete">
-                                        Hapus
-                                    </button>
-                                </form>
-                            </div>
-                        </td>
-                    </tr>
-                @empty
-                    <tr>
-                        <td colspan="5" style="text-align:center;padding:18px;">
-                            Belum ada menu. Tambahkan menu baru menggunakan tombol "Tambah Menu".
-                        </td>
-                    </tr>
-                @endforelse
+                        <form action="{{ route('admin.menus.destroy', $menu) }}" method="POST" style="display:inline-block;">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit"
+                                onclick="return confirm('Yakin hapus menu ini?')"
+                                style="border:none;background:#B91C1C;color:#fff;padding:8px 14px;border-radius:999px;font-weight:700;cursor:pointer;">
+                                Hapus
+                            </button>
+                        </form>
+                    </td>
+                </tr>
+            @endforeach
             </tbody>
         </table>
     </div>
+</div>
 @endsection
