@@ -9,7 +9,7 @@ class MenuController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('auth');
+        $this->middleware('auth')->except(['recommend']);
     }
 
     // HALAMAN INPUT BUDGET + HASIL REKOMENDASI
@@ -66,4 +66,21 @@ class MenuController extends Controller
         $menu = Menu::findOrFail($id);
         return view('menus.show', compact('menu'));
     }
+
+    public function recommend(Request $request)
+    {
+        $q = trim((string) $request->query('q', ''));
+
+        $menus = Menu::query()
+            ->when($q !== '', function ($query) use ($q) {
+                $query->where('name', 'like', '%' . $q . '%');
+            })
+            ->orderByDesc('rating')
+            ->orderByDesc('reviews_count')
+            ->orderBy('price')
+            ->get();
+
+        return view('menus.recommend', compact('menus', 'q'));
+    }
+
 }

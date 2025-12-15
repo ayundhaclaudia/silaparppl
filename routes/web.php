@@ -7,12 +7,9 @@ use App\Http\Controllers\CartController;
 use App\Http\Controllers\Admin\AdminMenuController;
 use App\Http\Controllers\Admin\AdminUserController;
 
-
 // ==========================
 // AUTH & LANDING
 // ==========================
-
-// Default landing page → redirect ke login
 Route::get('/', function () {
     return redirect()->route('login');
 });
@@ -34,30 +31,31 @@ Route::get('/dashboard', function () {
 })->middleware('auth');
 
 // ==========================
-// ROUTE USER (WAJIB LOGIN)
+// ROUTE USER (WAJIB LOGIN) -> USER & ADMIN bisa akses
 // ==========================
 Route::middleware('auth')->group(function () {
-    // Halaman menu & rekomendasi
+    // rekomendasi (bisa admin & user)
+    Route::get('/rekomendasi', [MenuController::class, 'recommend'])->name('menus.recommend');
+
+    // Halaman menu & rekomendasi budget
     Route::get('/menus', [MenuController::class, 'index'])->name('menus.index');
     Route::get('/menus/{id}', [MenuController::class, 'show'])->name('menus.show');
 
-    // Halaman keranjang / riwayat pilihan
+    // Keranjang (user biasa)
     Route::get('/keranjang', [CartController::class, 'index'])->name('cart.index');
     Route::post('/keranjang/{menu}', [CartController::class, 'store'])->name('cart.store');
     Route::delete('/keranjang/{cart}', [CartController::class, 'destroy'])->name('cart.destroy');
 });
+    
 
 // ==========================
 // ROUTE ADMIN (WAJIB LOGIN + ADMIN)
-// prefix: /admin
-// name:   admin.*
 // ==========================
 Route::prefix('admin')
     ->name('admin.')
     ->middleware(['auth', 'is_admin'])
     ->group(function () {
 
-        // /admin diarahkan ke /admin/menus
         Route::get('/', function () {
             return redirect()->route('admin.menus.index');
         })->name('dashboard');
